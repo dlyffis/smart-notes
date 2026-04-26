@@ -111,3 +111,63 @@ if input('Переписать словарь?') == 'да':
 with open('notes.json','r',encoding='UTF-8') as file:
     data = json.load(file) #загрузить из файла в словарь
     pprint(data)
+
+
+
+app = QApplication([])
+window = QWidget()
+window.setWindowTitle('Умные заметки')
+window.resize(800, 600)
+
+note_text = QTextEdit()
+
+list_of_notes = QListWidget()
+list_of_notes.itemClicked.connect(show_note)
+note_label = QLabel('Список заметок')
+b_make_notes = QPushButton('Создать заметку')
+b_make_notes.clicked.connect(create_note)
+
+b_delete_notes = QPushButton('Удалить заметку')
+b_delete_notes.clicked.connect(delete_note)
+
+b_save_notes = QPushButton('Сохранить заметку')
+b_save_notes.clicked.connect(save_note)
+
+list_of_tags = QListWidget()
+tag_label = QLabel('Список тегов')
+tag_enter = QLineEdit()
+b_add_to_note = QPushButton('Добавить к заметке')
+b_add_to_note.clicked.connect(add_tag)
+b_pin_from_note = QPushButton('Открепить от заметки')
+b_pin_from_note.clicked.connect(unpin_tag)
+b_search_notes = QPushButton('Искать заметки по тегу')
+b_search_notes.clicked.connect(click)
+line = QHBoxLayout()
+line1 = QVBoxLayout()
+h_line1 = QHBoxLayout()
+h_line2 = QHBoxLayout()
+
+line.addWidget(note_text)
+line.addLayout(line1)
+
+h_line1.addWidget(b_make_notes)
+h_line1.addWidget(b_delete_notes)
+
+h_line2.addWidget(b_add_to_note)
+h_line2.addWidget(b_pin_from_note)
+
+line1.addWidget(note_label)
+line1.addWidget(list_of_notes)
+line1.addLayout(h_line1)
+line1.addWidget(b_save_notes)
+
+line1.addWidget(tag_label)
+line1.addWidget(list_of_tags)
+line1.addWidget(tag_enter)
+line1.addLayout(h_line2)
+line1.addWidget(b_search_notes)
+
+window.setLayout(line)
+list_of_notes.addItems(data)
+window.show()
+app.exec()
